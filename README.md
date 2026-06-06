@@ -23,7 +23,7 @@ https://miniclinic-你的帳號.onrender.com
 - 病患資料管理（CRUD）
 - 線上掛號功能
 - 掛號狀態變更（booked / completed / cancelled）
-- RESTful API（支援第三方整合）
+- RESTful API（支援第三方整合、免認證系統統計摘要端點 `/api/stats`）
 
 ## 本機執行
 
@@ -47,6 +47,30 @@ cd miniclinic
 - 5 位虛構醫師
 - 3 位虛構病患（TEST00001, TEST00002, TEST00003）
 - 3 筆示範掛號
+
+## 系統統計 API 規格
+
+為了支援外部驗收工具（AI Agent）進行自動查核，專案提供一支公開、免認證的統計摘要端點。
+
+- **URL:** `/api/stats`
+- **Method:** `GET`
+- **Auth:** 免認證（不受 Interceptor 保護）
+- **Response Format:** `application/json`
+
+### 回傳範例
+
+```json
+{
+  "totalDoctors": 5,
+  "totalPatients": 3,
+  "totalAppointments": 7,
+  "byStatus": {
+    "BOOKED": 4,
+    "COMPLETED": 1,
+    "CANCELLED": 2
+  }
+}
+```
 
 ## 專案結構
 
