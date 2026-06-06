@@ -17,6 +17,8 @@
         .status-CANCELLED { color: #94A3B8; }
         .btn-cancel { background: #DC2626; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; }
         .btn-cancel:hover { background: #B91C1C; }
+        .btn-complete { background: #10B981; color: white; padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; }
+        .btn-complete:hover { background: #059669; }
         .alert-success { background: #D1FAE5; color: #065F46; padding: 12px; border-radius: 4px; margin-bottom: 16px; border-left: 5px solid #10B981; }
     </style>
 </head>
@@ -59,15 +61,23 @@
                           th:class="${'status-' + appt.status}">BOOKED</span>
                 </td>
                 <td>
-                    <!-- 只有在『已預約 (BOOKED)』狀態下才顯示取消按鈕 -->
-                    <form th:if="${appt.status == 'BOOKED'}" 
-                          th:action="@{/doctor/appointments/cancel/{id}(id=${appt.apptId})}" 
-                          method="post" 
-                          onsubmit="return confirm('確定要取消此筆病患掛號嗎？');"
-                          style="display: inline;">
-                        <button type="submit" class="btn-cancel">取消掛號</button>
-                    </form>
-                    <span th:if="${appt.status == 'CANCELLED'}">無操作</span>
+                    <div th:if="${appt.status == 'BOOKED'}" style="display: flex; gap: 8px;">
+                        <!-- 完成看診按鈕 -->
+                        <form th:action="@{/doctor/appointments/complete/{id}(id=${appt.apptId})}" method="post">
+                            <button type="submit" class="btn-complete">完成看診</button>
+                        </form>
+
+                        <!-- 取消掛號按鈕 -->
+                        <form th:action="@{/doctor/appointments/cancel/{id}(id=${appt.apptId})}" 
+                              method="post" 
+                              onsubmit="return confirm('確定要取消此筆掛號嗎？');">
+                            <button type="submit" class="btn-cancel">取消掛號</button>
+                        </form>
+                    </div>
+                    
+                    <!-- 非待診狀態下的文字提示 -->
+                    <span th:if="${appt.status == 'COMPLETED'}" style="color: #64748B;">--</span>
+                    <span th:if="${appt.status == 'CANCELLED'}" style="color: #64748B;">--</span>
                 </td>
             </tr>
         </tbody>

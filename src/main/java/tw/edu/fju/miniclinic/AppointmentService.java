@@ -16,4 +16,10 @@ public class AppointmentService {
         appointment.setStatus("CANCELLED"); // 將狀態改為已取消
         appointmentRepository.save(appointment);
     }
+    public void completeAppointment(Long id) {
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("找不到該筆預約"));
+        appointment.setStatus("COMPLETED"); // 將狀態改為已完成
+        appointmentRepository.save(appointment);
+    }
 }

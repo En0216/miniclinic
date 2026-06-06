@@ -20,4 +20,11 @@ public class DoctorController {
         redirectAttributes.addFlashAttribute("message", "已成功取消掛號");
         return "redirect:/dashboard";
     }
+
+    @PostMapping("/appointments/complete/{id}")
+    public String completeAppointment(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        appointmentService.completeAppointment(id);
+        redirectAttributes.addFlashAttribute("message", "看診紀錄已標記為完成");
+        return "redirect:/dashboard";
+    }
 }
